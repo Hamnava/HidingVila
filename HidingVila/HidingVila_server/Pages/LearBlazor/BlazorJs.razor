@@ -1,0 +1,37 @@
+﻿@page "/blazorjs"
+@inject IJSRuntime jsRuntime
+
+
+<div class="m-5 row">
+    <button @onclick="showMessage" class="btn btn-success">Test confirm button</button>
+</div>
+<button class="btn btn-success m-5" @onclick="btnsuccess">Toastr success</button>
+<button class="btn btn-success m-5" @onclick="btnerro">Toastr error</button>
+<div class="alert alert-danger m-5 p-5">
+    @if (confirmResult)
+        {
+            <h1>The message confirmed by user!</h1>
+        }
+        else
+        {
+            <h3>comfirmation is pending...</h3>
+
+        }
+    </div>
+    @code {
+        private bool confirmResult { get; set; }
+        private async Task showMessage()
+        {
+             confirmResult = await jsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to fonfirm this?");
+        }
+
+         private async Task btnsuccess()
+        {
+             await jsRuntime.InvokeVoidAsync("showMessage","success", "The operation Succeeed");
+        }
+
+         private async Task btnerro()
+        {
+             await jsRuntime.InvokeVoidAsync("showMessage","error", "The Operation Faild");
+        }
+}

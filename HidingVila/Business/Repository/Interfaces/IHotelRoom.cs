@@ -13,7 +13,7 @@ namespace Business.Repository.Interfaces
         Task<HotelRoomDTO> UpdateHotelRoom(int roomid, HotelRoomDTO hotelRoomDTO);
         Task<HotelRoomDTO> GetHotelRoom(int roomid);
         Task<IEnumerable<HotelRoomDTO>> GetRooms();
-        Task<HotelRoomDTO> ExistRoomName(string roomName);
+        Task<HotelRoomDTO> ExistRoomName(string roomName, int roomid = 0);
         Task<int> RemoveHotelRoom(int id);
     }
 }
