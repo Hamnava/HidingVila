@@ -33,8 +33,8 @@
                        <td>@item.RegularRate</td>
                        <td>@item.SqFt</td>
                        <td>
-                           <NavLink class="btn btn-info">Edit</NavLink>
-                           <NavLink class="btn btn-danger">Delete</NavLink>
+                           <NavLink href=@($"hotel-room/edit/{item.Id}") class="btn btn-info">Edit</NavLink>
+                           <NavLink  class="btn btn-danger">Delete</NavLink>
                        </td>
                    </tr>
                }

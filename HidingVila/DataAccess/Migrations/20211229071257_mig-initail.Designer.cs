@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211228212759_mig-HotelRoom")]
-    partial class migHotelRoom
+    [Migration("20211229071257_mig-initail")]
+    partial class miginitail
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,26 @@ namespace DataAccess.Migrations
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("DataAccess.Enttities.HotelImagesUrl", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("HotelImagesUrls");
+                });
 
             modelBuilder.Entity("DataAccess.Enttities.HotelRoom", b =>
                 {
@@ -59,6 +79,22 @@ namespace DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HotelRooms");
+                });
+
+            modelBuilder.Entity("DataAccess.Enttities.HotelImagesUrl", b =>
+                {
+                    b.HasOne("DataAccess.Enttities.HotelRoom", "HotelRoom")
+                        .WithMany("HotelImages")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HotelRoom");
+                });
+
+            modelBuilder.Entity("DataAccess.Enttities.HotelRoom", b =>
+                {
+                    b.Navigation("HotelImages");
                 });
 #pragma warning restore 612, 618
         }

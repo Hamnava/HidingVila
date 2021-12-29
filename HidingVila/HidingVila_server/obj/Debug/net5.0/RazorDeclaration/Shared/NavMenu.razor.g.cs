@@ -118,7 +118,7 @@ using Business.Repository.Interfaces;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 41 "D:\Projects\HidingVila\HidingVila\HidingVila_server\Shared\NavMenu.razor"
+#line 46 "D:\Projects\HidingVila\HidingVila\HidingVila_server\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 

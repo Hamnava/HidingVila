@@ -24,5 +24,7 @@ namespace DataAccess.Enttities
         public string UpdatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
 
+
+        public virtual ICollection<HotelImagesUrl> HotelImages { get; set; }
     }
 }

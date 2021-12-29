@@ -1,8 +1,10 @@
 ﻿@page "/hotel-room/create"
+@page "/hotel-room/edit/{Id:int}"
+
 @using Models
 @inject IHotelRoom _room
 @inject NavigationManager nav
-
+@inject IJSRuntime JsRuntime
 
 <div class="row mt-2 mb-5">
     <div class="col-12">
@@ -46,18 +48,47 @@
 </div>
 
 @code {
+    [Parameter]
+    public int? Id { get; set; }
+
     private HotelRoomDTO HotelRoomModel {get;set;} = new HotelRoomDTO();
     private string Title {get;set;} = "Create";
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != null)
+        {
+            // Update
+            Title = "Update";
+            HotelRoomModel = await _room.GetHotelRoom(Id.Value);
+        }
+        else
+        {
+            // create
+            HotelRoomModel = new HotelRoomDTO();
+        }
+    }
+
     private async Task OnUpsert()
     {
-        var roomName = await _room.ExistRoomName(HotelRoomModel.Name);
+        var roomName = await _room.ExistRoomName(HotelRoomModel.Name, HotelRoomModel.Id);
         if(roomName != null)
         {
-            // show error name
+            await JsRuntime.InvokeVoidAsync("showMessage","error", "This room is already existed");
             return;
         }
-        await _room.CreateHotelRoom(HotelRoomModel);
+        if (HotelRoomModel.Id != 0 && Title == "Update")
+        {
+            // update
+            var update = await _room.UpdateHotelRoom(HotelRoomModel.Id, HotelRoomModel);
+            await JsRuntime.InvokeVoidAsync("showMessage","success", "The operation Succeeed");
+        }
+        else
+        {
+            // create
+            await _room.CreateHotelRoom(HotelRoomModel);
+            await JsRuntime.InvokeVoidAsync("showMessage","success", "The operation Succeeed");
+        }
         nav.NavigateTo("hotel-room");
     }
 }
