@@ -16,7 +16,24 @@ namespace HidingVila_server.Service
         }
         public bool DeleteFile(string filename)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                var path = $"{_webHostEnvironment.WebRootPath}\\RoomImages\\{filename}";
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task<string> UploadFile(IBrowserFile file)
@@ -44,10 +61,10 @@ namespace HidingVila_server.Service
                 var fullpath = $"RoomImages/{fileName}";
                 return fullpath;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
 
-                throw (ex);
+                throw ex;
             }
         }
     }

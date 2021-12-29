@@ -1,10 +1,11 @@
 ﻿@page "/hotel-room/create"
 @page "/hotel-room/edit/{Id:int}"
-
+@using HidingVila_server.Service.IService
 @using Models
 @inject IHotelRoom _room
 @inject NavigationManager nav
 @inject IJSRuntime JsRuntime
+@inject IUploadFile uploadFile
 
 <div class="row mt-2 mb-5">
     <div class="col-12">
@@ -38,6 +39,9 @@
                 <div class="form-group">
                     <label>Details</label>
                     <InputTextArea @bind-Value="@HotelRoomModel.Details" class="form-control"></InputTextArea>
+                </div>
+                <div class="form-group">                   
+                    <InputFile OnChange="HandleFileUpload" class="form-control"></InputFile>
                 </div>
                 <button class="btn btn-primary">@Title Room</button>
                 <NavLink class="btn btn-secondary" href="hotel-room">Back to list</NavLink>
@@ -90,5 +94,54 @@
             await JsRuntime.InvokeVoidAsync("showMessage","success", "The operation Succeeed");
         }
         nav.NavigateTo("hotel-room");
+    }
+
+    private async Task HandleFileUpload(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            var images = new List<string>();
+            if (e.GetMultipleFiles().Count > 0)
+            {
+                foreach(var file in e.GetMultipleFiles())
+                {
+                    System.IO.FileInfo fileinfo = new System.IO.FileInfo(file.Name);
+                    if(fileinfo.Extension.ToLower()== ".jpg" || 
+                      fileinfo.Extension.ToLower()== ".png" ||
+                       fileinfo.Extension.ToLower()== ".jpeg")
+                    {
+                        var uploadedFilePath = await uploadFile.UploadFile(file);
+                        images.Add(uploadedFilePath);
+                    }
+                    else
+                    {
+                        await JsRuntime.InvokeVoidAsync("showMessage","error", "The image extention should be .jpg, .png , .jpeg");
+                        return;
+                    }
+                }
+
+                if (images.Any())
+                {
+                    if (HotelRoomModel.ImagesUrl != null && HotelRoomModel.ImagesUrl.Any())
+                    {
+                        HotelRoomModel.ImagesUrl.AddRange(images);
+                    }
+                    else
+                    {
+                        HotelRoomModel.ImagesUrl = new List<string>();
+                        HotelRoomModel.ImagesUrl.AddRange(images);
+                    }
+                }
+                else
+                {
+                    await JsRuntime.InvokeVoidAsync("showMessage","error", "Upload images Faild");
+                    return;
+                }
+            }
+        }
+        catch (Exception)
+        {
+             await JsRuntime.InvokeVoidAsync("showMessage","error", "An Excepiton occured");
+        }
     }
 }
