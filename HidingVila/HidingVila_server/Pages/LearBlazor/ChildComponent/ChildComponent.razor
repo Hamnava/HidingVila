@@ -1,0 +1,31 @@
+﻿
+<div>
+
+    <div class="alert alert-info">@myp</div>
+    <div class="alert alert-success">
+        @if(@ChildContent == null)
+        {
+            <span>Hello From Empty Fragement in the parent side</span>
+        }
+        else
+        {
+            <span>@ChildContent</span> <br />
+             <span>@DangerChildContent</span>
+        }
+    </div>
+    <button class="btn btn-danger" @onclick="onButtonclicked">Click me to show EventCallBack from child</button>
+</div>
+
+@code {
+    [Parameter]
+    public string myp { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set;  }
+
+    [Parameter]
+    public RenderFragment DangerChildContent { get; set;  }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> onButtonclicked { get; set; }
+}

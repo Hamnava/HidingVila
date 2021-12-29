@@ -1,8 +1,10 @@
+using DataAccess.Data;
 using HidingVila_server.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Business.Repository.Interfaces;
+using Business.Repository;
 
 namespace HidingVila_server
 {
@@ -26,6 +31,20 @@ namespace HidingVila_server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // Database Configuration
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            // AutoMapper 
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            // Reposiroty configuration
+            services.AddScoped<IHotelRoom, HotelRoomService>();
+
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();

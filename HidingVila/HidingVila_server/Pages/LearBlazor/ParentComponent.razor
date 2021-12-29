@@ -1,0 +1,21 @@
+﻿@page "/parentComponent"
+
+<h3 class="text-danger">ParentComponent</h3>
+  <ChildComponent myp="this is some text form parent to child component">
+
+      <ChildContent>It is a Render Fragement from child componetn WooHooOOoo</ChildContent> 
+      <DangerChildContent>It is a DangerChild Content from Render Fragement from child componetn WooHooOOoo</DangerChildContent>
+  </ChildComponent>
+    <h2>@msgtext</h2>
+
+    <br />
+    <AnotherChildComponent Placeholder="This is a placeholder from parent "></AnotherChildComponent>
+@code {
+    private string msgtext = "";
+
+    private void ShowMessage(MouseEventArgs e)
+    {
+        msgtext = "WOoHOo this is Balzzzzing";
+
+    }
+}

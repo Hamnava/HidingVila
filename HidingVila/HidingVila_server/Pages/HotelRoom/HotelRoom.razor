@@ -1,0 +1,52 @@
+﻿@page "/hotel-room"
+@using Models
+@inject IHotelRoom _room
+@inject NavigationManager nav
+
+
+<div class="row mt-4">
+    <div class="col-8">
+        <h4 class="card-title text-info">Hotel Room's List</h4>
+    </div>
+    <div class="col-3 offset-1">
+        <NavLink href="hotel-room/create" class="btn btn-info">Add New Room</NavLink>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Occupancy</th>
+                    <th>Rate</th>
+                    <th>SqFt</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in rooms)
+               {
+                   <tr>
+                       <td>@item.Name</td>
+                       <td>@item.Ocupancy</td>
+                       <td>@item.RegularRate</td>
+                       <td>@item.SqFt</td>
+                       <td>
+                           <NavLink class="btn btn-info">Edit</NavLink>
+                           <NavLink class="btn btn-danger">Delete</NavLink>
+                       </td>
+                   </tr>
+               }
+            </tbody>
+        </table>
+    </div>
+</div>
+@code {
+    private IEnumerable<HotelRoomDTO> rooms = new List<HotelRoomDTO>();
+
+    protected override async void OnInitialized()
+    {
+        rooms = await _room.GetRooms();
+    }
+}

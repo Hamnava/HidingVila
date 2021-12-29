@@ -82,6 +82,34 @@ using HidingVila_server.Shared;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 12 "D:\Projects\HidingVila\HidingVila\HidingVila_server\_Imports.razor"
+using HidingVila_server.Model;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 13 "D:\Projects\HidingVila\HidingVila\HidingVila_server\_Imports.razor"
+using HidingVila_server.Pages.LearBlazor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 14 "D:\Projects\HidingVila\HidingVila\HidingVila_server\_Imports.razor"
+using HidingVila_server.Pages.LearBlazor.ChildComponent;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 15 "D:\Projects\HidingVila\HidingVila\HidingVila_server\_Imports.razor"
+using Business.Repository.Interfaces;
+
+#line default
+#line hidden
+#nullable disable
     public partial class NavMenu : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
@@ -90,7 +118,7 @@ using HidingVila_server.Shared;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 28 "D:\Projects\HidingVila\HidingVila\HidingVila_server\Shared\NavMenu.razor"
+#line 41 "D:\Projects\HidingVila\HidingVila\HidingVila_server\Shared\NavMenu.razor"
        
     private bool collapseNavMenu = true;
 
