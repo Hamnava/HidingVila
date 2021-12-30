@@ -6,3 +6,11 @@
         toastr.error(message, 'Operation Faild!')
     }
 }
+
+function ShowDeleteConfirmationModal() {
+    $('#deleteConfirmationModal').modal('show');
+}
+
+function HideDeleteConfirmationModal() {
+    $('#deleteConfirmationModal').modal('hide');
+}

@@ -2,6 +2,7 @@
 @using Models
 @inject IHotelRoom _room
 @inject NavigationManager nav
+@inject IJSRuntime jsRuntime
 
 
 <div class="row mt-4">
@@ -42,11 +43,26 @@
         </table>
     </div>
 </div>
+
+<DeleteConfirmationComponent></DeleteConfirmationComponent>
 @code {
     private IEnumerable<HotelRoomDTO> rooms = new List<HotelRoomDTO>();
-
+    private int? DeleteRoomId { get; set; } = null;
     protected override async void OnInitialized()
     {
         rooms = await _room.GetRooms();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await jsRuntime.InvokeVoidAsync("ShowDeleteConfirmationModal");
+    }
+
+    private async Task ConfirmDelete_Click(bool IsConfirmed)
+    {
+        if (IsConfirmed && DeleteRoomId !=null)
+        {
+            await _room.RemoveHotelRoom(DeleteRoomId.Value);
+        }
     }
 }

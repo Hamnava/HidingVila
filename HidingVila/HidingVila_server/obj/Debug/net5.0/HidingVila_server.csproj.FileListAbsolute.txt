@@ -106,3 +106,5 @@ D:\Projects\HidingVila\HidingVila\HidingVila_server\bin\Debug\net5.0\Business.dl
 D:\Projects\HidingVila\HidingVila\HidingVila_server\bin\Debug\net5.0\Business.pdb
 D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\RazorDeclaration\Pages\LearBlazor\BlazorJs.razor.g.cs
 D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\Razor\Pages\LearBlazor\BlazorJs.razor.g.cs
+D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\RazorDeclaration\Shared\DeleteConfirmationComponent.razor.g.cs
+D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\Razor\Shared\DeleteConfirmationComponent.razor.g.cs
