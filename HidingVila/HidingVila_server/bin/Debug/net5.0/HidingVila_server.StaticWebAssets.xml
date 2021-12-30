@@ -1,4 +1,5 @@
 ﻿<StaticWebAssets Version="1.0">
   <ContentRoot BasePath="/" Path="D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\scopedcss\bundle\" />
+  <ContentRoot BasePath="/Identity" Path="C:\Users\Hamnava\.nuget\packages\microsoft.aspnetcore.identity.ui\5.0.12\staticwebassets\V4\" />
   <ContentRoot BasePath="_content/Blazored.TextEditor" Path="C:\Users\Hamnava\.nuget\packages\blazored.texteditor\1.0.7\build\..\staticwebassets\" />
 </StaticWebAssets>
