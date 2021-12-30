@@ -7,6 +7,7 @@
 @inject IJSRuntime JsRuntime
 @inject IUploadFile uploadFile
 @inject IHotelImage _image
+@*@attribute [Authorize(Roles = Common.CD.Role_Admin)]*@
 
 <div class="row mt-2 mb-5">
     <div class="col-12">
@@ -118,11 +119,21 @@
     private bool IsUploadPhotoStarted { get; set; } = false;
     public BlazoredTextEditor QuillHtml { get; set; } = new BlazoredTextEditor();
 
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState {  get;  set; }
 
     protected override async Task OnInitializedAsync()
     {
+        // for athenticatioin
+        var authenticatedState = await AuthenticationState;
+        if (!authenticatedState.User.IsInRole(Common.CD.Role_Admin))
+        {
+            var uri =new Uri(nav.Uri);
+            nav.NavigateTo($"/Identity/account/login?returnUrl={uri.LocalPath}");
+        }
         if (Id != null)
         {
+
             // Update
             Title = "Update";
             HotelRoomModel = await _room.GetHotelRoom(Id.Value);

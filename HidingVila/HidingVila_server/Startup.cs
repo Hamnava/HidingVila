@@ -17,6 +17,7 @@ using Business.Repository.Interfaces;
 using Business.Repository;
 using HidingVila_server.Service.IService;
 using HidingVila_server.Service;
+using Microsoft.AspNetCore.Identity;
 
 namespace HidingVila_server
 {
@@ -40,6 +41,10 @@ namespace HidingVila_server
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // Identity configuration
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI();
             // AutoMapper 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -72,11 +77,13 @@ namespace HidingVila_server
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
