@@ -50,6 +50,7 @@ namespace HidingVila_server
 
             // Reposiroty configuration
             services.AddScoped<IHotelRoom, HotelRoomService>();
+            services.AddScoped<IDbInitialize, DbInitialize>();
             services.AddScoped<IHotelImage, HotelRoomImageServices>();
             services.AddScoped<IUploadFile, UploadService>();
 
@@ -62,7 +63,7 @@ namespace HidingVila_server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitialize dbInitialize)
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +81,7 @@ namespace HidingVila_server
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            dbInitialize.Initialize();
 
             app.UseEndpoints(endpoints =>
             {
