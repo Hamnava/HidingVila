@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,8 +63,8 @@ namespace Business.Repository
         {
             try
             {
-                var hotelRoom = _mapper.Map<HotelRoom, HotelRoomDTO>(
-                await _context.HotelRooms.FirstOrDefaultAsync(r => r.Id == roomid ));
+                HotelRoomDTO hotelRoom = _mapper.Map<HotelRoom, HotelRoomDTO>(
+                await _context.HotelRooms.Include(x=> x.HotelImages).FirstOrDefaultAsync(r => r.Id == roomid ));
 
                 return hotelRoom;
             }
@@ -78,7 +79,8 @@ namespace Business.Repository
             try
             {
                 var roomList =
-                  _mapper.Map<IEnumerable<HotelRoom>, IEnumerable<HotelRoomDTO>>( _context.HotelRooms);
+                  _mapper.Map<IEnumerable<HotelRoom>, IEnumerable<HotelRoomDTO>>
+                  ( _context.HotelRooms.Include(x=> x.HotelImages));
                 return roomList;
             }
             catch (Exception ex)
@@ -91,9 +93,11 @@ namespace Business.Repository
         {
             try
             {
-                var room = await _context.HotelRooms.FindAsync();
+                var room = await _context.HotelRooms.FindAsync(id);
                 if (room != null)
                 {
+                    var allImage = _context.HotelImagesUrls.Where(x => x.RoomId == id).ToList();
+                    _context.HotelImagesUrls.RemoveRange(allImage);
                     _context.HotelRooms.Remove(room);
                      return await _context.SaveChangesAsync();
                 }

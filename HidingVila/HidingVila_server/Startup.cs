@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Business.Repository.Interfaces;
 using Business.Repository;
+using HidingVila_server.Service.IService;
+using HidingVila_server.Service;
 
 namespace HidingVila_server
 {
@@ -43,7 +45,11 @@ namespace HidingVila_server
 
             // Reposiroty configuration
             services.AddScoped<IHotelRoom, HotelRoomService>();
+            services.AddScoped<IHotelImage, HotelRoomImageServices>();
+            services.AddScoped<IUploadFile, UploadService>();
 
+            // for access to url address on this project
+            services.AddHttpContextAccessor();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
