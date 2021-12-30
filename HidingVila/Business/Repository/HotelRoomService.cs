@@ -93,17 +93,10 @@ namespace Business.Repository
         {
             try
             {
-                var room = await _context.HotelRooms.FindAsync();
+                var room = await _context.HotelRooms.FindAsync(id);
                 if (room != null)
                 {
                     var allImage = _context.HotelImagesUrls.Where(x => x.RoomId == id).ToList();
-                    foreach(var image in allImage)
-                    {
-                        if (File.Exists(image.ImageUrl))
-                        {
-                            File.Delete(image.ImageUrl);
-                        }
-                    }
                     _context.HotelImagesUrls.RemoveRange(allImage);
                     _context.HotelRooms.Remove(room);
                      return await _context.SaveChangesAsync();

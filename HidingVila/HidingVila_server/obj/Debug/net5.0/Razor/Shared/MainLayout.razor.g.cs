@@ -107,6 +107,13 @@ using Business.Repository.Interfaces;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 16 "D:\Projects\HidingVila\HidingVila\HidingVila_server\_Imports.razor"
+using Blazored.TextEditor;
+
+#line default
+#line hidden
+#nullable disable
     public partial class MainLayout : LayoutComponentBase
     {
         #pragma warning disable 1998

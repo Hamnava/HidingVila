@@ -1,24 +1,54 @@
-﻿
-
-<!-- Modal -->
+﻿<!-- Modal -->
 <div class="modal fade" id="deleteConfirmationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
-      </div>
-      <div class="modal-body">
-       Are you sure you want to delete it?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
-      </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Delete the Hotel Room</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                   @onclick="()=>OnConfrimButton(false)">
+               </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete it?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal" 
+                   @onclick="()=>OnConfrimButton(false)">close 
+               </button>
+                @if (IsProcessStart)
+                {
+                    <button type="button" class="btn btn-danger"><i class="fa fa-spin fa-spinner"></i> Proccessing...</button>
+                }
+                else
+                {
+                    <button @onclick="()=>OnConfrimButton(true)" type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                }
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 @code {
 
+    public bool IsProcessStart { get; set; } = false;
+
+    [Parameter]
+    public EventCallback<bool> ConfimationChanged { get; set; }
+
+    [Parameter]
+    public bool IsParentProcessing { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        IsProcessStart = IsParentProcessing;
+    }
+
+    protected async Task OnConfrimButton(bool value)
+    {
+        if (value)
+        {
+            IsProcessStart = true;
+        }
+        await ConfimationChanged.InvokeAsync(value);
+    }
 }

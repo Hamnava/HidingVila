@@ -1,6 +1,7 @@
 ﻿using HidingVila_server.Service.IService;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,9 +11,11 @@ namespace HidingVila_server.Service
     public class UploadService : IUploadFile
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public UploadService(IWebHostEnvironment webHostEnvironment)
+        private readonly IHttpContextAccessor _accessor;
+        public UploadService(IWebHostEnvironment webHostEnvironment, IHttpContextAccessor accessor)
         {
             _webHostEnvironment = webHostEnvironment;
+            _accessor = accessor;
         }
         public bool DeleteFile(string filename)
         {
@@ -57,8 +60,8 @@ namespace HidingVila_server.Service
                 {
                     memorystream.WriteTo(fs);
                 }
-
-                var fullpath = $"RoomImages/{fileName}";
+                var url = $"{_accessor.HttpContext.Request.Scheme}://{_accessor.HttpContext.Request.Host.Value}/";
+                var fullpath = $"{url}RoomImages/{fileName}";
                 return fullpath;
             }
             catch (Exception ex)

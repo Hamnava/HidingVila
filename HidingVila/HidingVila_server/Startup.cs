@@ -48,6 +48,8 @@ namespace HidingVila_server
             services.AddScoped<IHotelImage, HotelRoomImageServices>();
             services.AddScoped<IUploadFile, UploadService>();
 
+            // for access to url address on this project
+            services.AddHttpContextAccessor();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();

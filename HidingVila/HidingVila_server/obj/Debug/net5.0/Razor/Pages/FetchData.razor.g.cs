@@ -108,6 +108,13 @@ using Business.Repository.Interfaces;
 #line hidden
 #nullable disable
 #nullable restore
+#line 16 "D:\Projects\HidingVila\HidingVila\HidingVila_server\_Imports.razor"
+using Blazored.TextEditor;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
 #line 3 "D:\Projects\HidingVila\HidingVila\HidingVila_server\Pages\FetchData.razor"
 using HidingVila_server.Data;
 
