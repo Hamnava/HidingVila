@@ -12,6 +12,7 @@ namespace Business.Repository.Interfaces
         Task<int> CreateHotelRoomImage(HotelImageDTO hotelImage);
         Task<int> DeleteHotelRoomImage(int imageId);
         Task<int> DeleteHotelRoomImageByRoomId(int roomId);
+        Task<int> DeleteHotelRoomImageByUrl(string imageUrl);
         Task<IEnumerable<HotelImageDTO>> GetHotelImageByRoomId(int roomId);
     }
 }

@@ -6,47 +6,71 @@
 @inject NavigationManager nav
 @inject IJSRuntime JsRuntime
 @inject IUploadFile uploadFile
+@inject IHotelImage _image
 
 <div class="row mt-2 mb-5">
     <div class="col-12">
         <div class="card p-5">
-        <div class="card-title text-info">
-            <h2>@Title Hotel's Room</h2>
-        </div>
-        <div class="card-body">
-            <EditForm Model="HotelRoomModel" OnValidSubmit="OnUpsert">
-                <DataAnnotationsValidator />
-                <div class="form-group">
-                    <label>Name</label>
-                    <InputText @bind-Value="@HotelRoomModel.Name" class="form-control"></InputText>
-                    <ValidationMessage For="()=> HotelRoomModel.Name"></ValidationMessage>
-                </div>
-                <div class="form-group">
-                    <label>Ocupancy</label>
-                    <InputNumber @bind-Value="@HotelRoomModel.Ocupancy" class="form-control"></InputNumber>
-                    <ValidationMessage For="()=> HotelRoomModel.Ocupancy"></ValidationMessage>
-                </div>
-                <div class="form-group">
-                    <label>RegularRate</label>
-                    <InputNumber @bind-Value="@HotelRoomModel.RegularRate" class="form-control"></InputNumber>
-                    <ValidationMessage For="()=> HotelRoomModel.RegularRate"></ValidationMessage>
-                </div>
-                 <div class="form-group">
-                    <label>SqFt</label>
-                    <InputText @bind-Value="@HotelRoomModel.SqFt" class="form-control"></InputText>
-                    <ValidationMessage For="()=> HotelRoomModel.SqFt"></ValidationMessage>
-                </div>
-                <div class="form-group">
-                    <label>Details</label>
-                    <InputTextArea @bind-Value="@HotelRoomModel.Details" class="form-control"></InputTextArea>
-                </div>
-                <div class="form-group">                   
-                    <InputFile OnChange="HandleFileUpload" class="form-control"></InputFile>
-                </div>
-                <button class="btn btn-primary">@Title Room</button>
-                <NavLink class="btn btn-secondary" href="hotel-room">Back to list</NavLink>
-            </EditForm>
-        </div>
+            <div class="card-title text-info">
+                <h2>@Title Hotel's Room</h2>
+            </div>
+            <div class="card-body">
+                <EditForm Model="HotelRoomModel" OnValidSubmit="OnUpsert">
+                    <DataAnnotationsValidator />
+                    <div class="form-group">
+                        <label>Name</label>
+                        <InputText @bind-Value="@HotelRoomModel.Name" class="form-control"></InputText>
+                        <ValidationMessage For="()=> HotelRoomModel.Name"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Ocupancy</label>
+                        <InputNumber @bind-Value="@HotelRoomModel.Ocupancy" class="form-control"></InputNumber>
+                        <ValidationMessage For="()=> HotelRoomModel.Ocupancy"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>RegularRate</label>
+                        <InputNumber @bind-Value="@HotelRoomModel.RegularRate" class="form-control"></InputNumber>
+                        <ValidationMessage For="()=> HotelRoomModel.RegularRate"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>SqFt</label>
+                        <InputText @bind-Value="@HotelRoomModel.SqFt" class="form-control"></InputText>
+                        <ValidationMessage For="()=> HotelRoomModel.SqFt"></ValidationMessage>
+                    </div>
+                    <div class="form-group">
+                        <label>Details</label>
+                        <InputTextArea @bind-Value="@HotelRoomModel.Details" class="form-control"></InputTextArea>
+                    </div>
+                    <div class="form-group">
+                        <InputFile OnChange="HandleFileUpload" multiple class="form-control"></InputFile>
+                    </div>
+                    @if (HotelRoomModel.ImagesUrl != null && HotelRoomModel.ImagesUrl.Count > 0)
+                    {
+                        int serial = 1;
+                        <div class="row mt-4">
+                            @if (IsUploadPhotoStarted)
+                           {
+                               <div class="col-12 alert alert-info p-4">
+                                   <span><i class="fa fa-spin fa-spinner"></i> Please wait... images are uploading...</span>
+                               </div>
+                           }
+                            @foreach (var img in HotelRoomModel.ImagesUrl)
+                            {
+                                <div class="col-2 m-3">
+                                    <div class="room-image" style="background: url('@img') 50% 50%;">
+                                        <span class="room-image-title">@serial</span>
+                                    </div>
+                                    <button @onclick="()=> DeleteImage(img)" class="d-block btn btn-outline-danger mt-4">Delete</button>
+                                </div>
+                                serial++;
+                            }
+
+                        </div>
+                    }
+                    <button class="btn btn-primary">@Title Room</button>
+                    <NavLink class="btn btn-secondary" href="hotel-room">Back to list</NavLink>
+                </EditForm>
+            </div>
         </div>
     </div>
 </div>
@@ -55,8 +79,13 @@
     [Parameter]
     public int? Id { get; set; }
 
-    private HotelRoomDTO HotelRoomModel {get;set;} = new HotelRoomDTO();
-    private string Title {get;set;} = "Create";
+    private HotelRoomDTO HotelRoomModel { get; set; } = new HotelRoomDTO();
+    private HotelImageDTO RoomImage { get; set; } = new HotelImageDTO();
+    private List<string> DeletedImageName { get; set; } = new List<string>();
+    private string Title { get; set; } = "Create";
+    private bool IsUploadPhotoStarted { get; set; } = false;
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -65,6 +94,11 @@
             // Update
             Title = "Update";
             HotelRoomModel = await _room.GetHotelRoom(Id.Value);
+
+            if (HotelRoomModel?.HotelImages != null)
+            {
+                HotelRoomModel.ImagesUrl = HotelRoomModel.HotelImages.Select(x => x.ImageUrl).ToList();
+            }
         }
         else
         {
@@ -76,22 +110,37 @@
     private async Task OnUpsert()
     {
         var roomName = await _room.ExistRoomName(HotelRoomModel.Name, HotelRoomModel.Id);
-        if(roomName != null)
+        if (roomName != null)
         {
-            await JsRuntime.InvokeVoidAsync("showMessage","error", "This room is already existed");
+            await JsRuntime.InvokeVoidAsync("showMessage", "error", "This room is already existed");
             return;
         }
         if (HotelRoomModel.Id != 0 && Title == "Update")
         {
             // update
             var update = await _room.UpdateHotelRoom(HotelRoomModel.Id, HotelRoomModel);
-            await JsRuntime.InvokeVoidAsync("showMessage","success", "The operation Succeeed");
+            if ((HotelRoomModel.ImagesUrl != null && HotelRoomModel.ImagesUrl.Any())
+                 || DeletedImageName != null && DeletedImageName.Any())
+            {
+                if (DeletedImageName != null && DeletedImageName.Any())
+                {
+                    foreach (var deleteimage in DeletedImageName)
+                    {
+                        var imageName = deleteimage.Replace($"RoomImages/", "");
+                        var result = uploadFile.DeleteFile(imageName);
+                        await _image.DeleteHotelRoomImageByUrl(deleteimage);  
+                    }
+                }
+                await AddHotelRoomImage(update);
+            }
+            await JsRuntime.InvokeVoidAsync("showMessage", "success", "The operation Succeeed");
         }
         else
         {
             // create
-            await _room.CreateHotelRoom(HotelRoomModel);
-            await JsRuntime.InvokeVoidAsync("showMessage","success", "The operation Succeeed");
+            var createdResult = await _room.CreateHotelRoom(HotelRoomModel);
+            await AddHotelRoomImage(createdResult);
+            await JsRuntime.InvokeVoidAsync("showMessage", "success", "The operation Succeeed");
         }
         nav.NavigateTo("hotel-room");
     }
@@ -100,22 +149,23 @@
     {
         try
         {
+            IsUploadPhotoStarted = true;
             var images = new List<string>();
             if (e.GetMultipleFiles().Count > 0)
             {
-                foreach(var file in e.GetMultipleFiles())
+                foreach (var file in e.GetMultipleFiles())
                 {
                     System.IO.FileInfo fileinfo = new System.IO.FileInfo(file.Name);
-                    if(fileinfo.Extension.ToLower()== ".jpg" || 
-                      fileinfo.Extension.ToLower()== ".png" ||
-                       fileinfo.Extension.ToLower()== ".jpeg")
+                    if (fileinfo.Extension.ToLower() == ".jpg" ||
+                      fileinfo.Extension.ToLower() == ".png" ||
+                       fileinfo.Extension.ToLower() == ".jpeg")
                     {
                         var uploadedFilePath = await uploadFile.UploadFile(file);
                         images.Add(uploadedFilePath);
                     }
                     else
                     {
-                        await JsRuntime.InvokeVoidAsync("showMessage","error", "The image extention should be .jpg, .png , .jpeg");
+                        await JsRuntime.InvokeVoidAsync("showMessage", "error", "The image extention should be .jpg, .png , .jpeg");
                         return;
                     }
                 }
@@ -134,14 +184,57 @@
                 }
                 else
                 {
-                    await JsRuntime.InvokeVoidAsync("showMessage","error", "Upload images Faild");
+                    await JsRuntime.InvokeVoidAsync("showMessage", "error", "Upload images Faild");
                     return;
                 }
             }
+            IsUploadPhotoStarted = false;
         }
         catch (Exception)
         {
-             await JsRuntime.InvokeVoidAsync("showMessage","error", "An Excepiton occured");
+            await JsRuntime.InvokeVoidAsync("showMessage", "error", "An Excepiton occured");
+        }
+
+    }
+
+    private async Task AddHotelRoomImage(HotelRoomDTO imageDTO)
+    {
+        foreach (var image in HotelRoomModel.ImagesUrl)
+        {
+            if (HotelRoomModel.HotelImages == null || HotelRoomModel.HotelImages.Where(x => x.ImageUrl == image).Count() == 0)
+            {
+                RoomImage = new HotelImageDTO()
+                    {
+                        RoomId = imageDTO.Id,
+                        ImageUrl = image
+                    };
+                await _image.CreateHotelRoomImage(RoomImage);
+            }
+
+        }
+    }
+
+    internal async Task DeleteImage(string imageUrl)
+    {
+        try
+        {
+            var imageIndex = HotelRoomModel.ImagesUrl.FindIndex(x => x == imageUrl);
+            var imageName = imageUrl.Replace($"RoomImages/", "");
+            if (HotelRoomModel.Id == 0 && Title == "Create")
+            {
+                var result = uploadFile.DeleteFile(imageName);
+            }
+            else
+            {
+                // update
+                DeletedImageName ??= new List<string>();
+                DeletedImageName.Add(imageUrl);
+            }
+            HotelRoomModel.ImagesUrl.RemoveAt(imageIndex);
+        }
+        catch (Exception ex)
+        {
+            await JsRuntime.InvokeVoidAsync("showMessage", "error", "Faild to delete image");
         }
     }
 }
