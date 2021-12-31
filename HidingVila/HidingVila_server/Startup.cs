@@ -17,6 +17,7 @@ using Business.Repository.Interfaces;
 using Business.Repository;
 using HidingVila_server.Service.IService;
 using HidingVila_server.Service;
+using Microsoft.AspNetCore.Identity;
 
 namespace HidingVila_server
 {
@@ -40,6 +41,10 @@ namespace HidingVila_server
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            // Identity configuration
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultUI();
             // AutoMapper 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

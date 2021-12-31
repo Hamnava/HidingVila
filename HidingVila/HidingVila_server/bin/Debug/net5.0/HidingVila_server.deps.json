@@ -37,6 +37,7 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.1",
           "Blazored.TextEditor": "1.0.7",
           "Business": "1.0.0",
+          "Common": "1.0.0",
           "DataAccess": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.12",
           "Microsoft.AspNetCore.Identity.UI": "5.0.12",
@@ -1994,6 +1995,14 @@
         },
         "compile": {
           "Business.dll": {}
+        }
+      },
+      "Common/1.0.0": {
+        "runtime": {
+          "Common.dll": {}
+        },
+        "compile": {
+          "Common.dll": {}
         }
       },
       "DataAccess/1.0.0": {
@@ -4675,6 +4684,11 @@
       "hashPath": "system.xml.xmlserializer.4.3.0.nupkg.sha512"
     },
     "Business/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Common/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

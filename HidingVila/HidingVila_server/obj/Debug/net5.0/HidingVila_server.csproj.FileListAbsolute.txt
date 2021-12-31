@@ -238,3 +238,7 @@ D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\Razor\Pages
 D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\Razor\Pages\Shared\_ValidationScriptsPartial.cshtml.g.cs
 D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\Razor\Pages\_ViewImports.cshtml.g.cs
 D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\Razor\Pages\_ViewStart.cshtml.g.cs
+D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\RazorDeclaration\Shared\LoginConponent.razor.g.cs
+D:\Projects\HidingVila\HidingVila\HidingVila_server\obj\Debug\net5.0\Razor\Shared\LoginConponent.razor.g.cs
+D:\Projects\HidingVila\HidingVila\HidingVila_server\bin\Debug\net5.0\Common.dll
+D:\Projects\HidingVila\HidingVila\HidingVila_server\bin\Debug\net5.0\Common.pdb

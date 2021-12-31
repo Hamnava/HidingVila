@@ -5,7 +5,7 @@
 @inject NavigationManager nav
 @inject IJSRuntime jsRuntime
 @inject IUploadFile _fileupload
-
+@attribute [Authorize(Roles = Common.CD.Role_Admin)]
 
 <div class="row mt-4">
     <div class="col-8">

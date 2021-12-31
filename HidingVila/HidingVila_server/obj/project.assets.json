@@ -2262,6 +2262,16 @@
           "bin/placeholder/Business.dll": {}
         }
       },
+      "Common/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "compile": {
+          "bin/placeholder/Common.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Common.dll": {}
+        }
+      },
       "DataAccess/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
@@ -7790,6 +7800,11 @@
       "path": "../Business/Business.csproj",
       "msbuildProject": "../Business/Business.csproj"
     },
+    "Common/1.0.0": {
+      "type": "project",
+      "path": "../Common/Common.csproj",
+      "msbuildProject": "../Common/Common.csproj"
+    },
     "DataAccess/1.0.0": {
       "type": "project",
       "path": "../DataAccess/DataAccess.csproj",
@@ -7807,6 +7822,7 @@
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.1",
       "Blazored.TextEditor >= 1.0.7",
       "Business >= 1.0.0",
+      "Common >= 1.0.0",
       "DataAccess >= 1.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 5.0.12",
       "Microsoft.AspNetCore.Identity.UI >= 5.0.12",
@@ -7846,6 +7862,9 @@
           "projectReferences": {
             "D:\\Projects\\HidingVila\\HidingVila\\Business\\Business.csproj": {
               "projectPath": "D:\\Projects\\HidingVila\\HidingVila\\Business\\Business.csproj"
+            },
+            "D:\\Projects\\HidingVila\\HidingVila\\Common\\Common.csproj": {
+              "projectPath": "D:\\Projects\\HidingVila\\HidingVila\\Common\\Common.csproj"
             },
             "D:\\Projects\\HidingVila\\HidingVila\\DataAccess\\DataAccess.csproj": {
               "projectPath": "D:\\Projects\\HidingVila\\HidingVila\\DataAccess\\DataAccess.csproj"
